@@ -96,9 +96,9 @@ class Application extends Fabric.App {
     return this;
   }
 
-  _updatePosition(x, y, z){
+  _updatePosition(x, y, z, dx=0, dy=0, dz=0){
     if(!this.player) return;
-    this.authority.patch(`/players/${this.player.id}`, {id:this.player.id, x:x, y:y, z:z});
+    this.authority.patch(`/players/${this.player.id}`, {id:this.player.id, x:x, y:y, z:z, dx:dx, dy:dy, dz:dz});
   }
 
   _toggleFullscreen () {

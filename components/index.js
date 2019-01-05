@@ -227,7 +227,7 @@ async function UI () {
 
   function networkFrame () {
     let player = players[0];
-    rpg._updatePosition(player.x, player.y, player.z);
+    rpg._updatePosition(player.x, player.y, player.z, player.dx, player.dy, player.dz);
     setTimeout(networkFrame, 1000/10);
   }
 
@@ -319,6 +319,7 @@ async function UI () {
     player = new Sprite(mario, 480, 640, 48, 64, 380, 380);
     player.dx = 0;
     player.dy = 0;
+    player.dz = 0;
     player.walkspeed = default_walk_speed;
     player.jumpspeed = default_jump_speed;
     player.damage = 3;
@@ -341,6 +342,7 @@ async function UI () {
 
       player3.dx = Math.floor( Math.random() * 3 + 2 );
       player3.dy = Math.floor( Math.random() * 3 + 2);
+      player3.dz = 0;
       player3.x0 = player3.x; player3.y0 = player3.y;
       player3.max_bounces = 100000;
       player3.bounces = 0;
@@ -603,6 +605,8 @@ async function UI () {
     if(np) {
       np.x = data.value.x;
       np.y = data.value.y;
+      np.dx = data.value.dx || 0;
+      np.dy = data.value.dy || 0;
     }
   }
 
