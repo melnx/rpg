@@ -1,0 +1,119 @@
+<html>
+
+<head>
+
+    <style>
+        .tile{
+            background-size:cover;
+            height: 50px;
+            width: 50px;
+            box-sizing: border-box;
+        }
+        .selected{
+            border:2px solid red;
+        }
+
+        body{
+            background:black;
+        }
+
+        h1,h2,h3,h4{color:white}
+    </style>
+
+</head>
+
+<body>
+
+    <div style="width:200px;">
+        <h3>tiles</h3>
+        <div id="tiles"></div>
+    </div>
+    <div id="map"></div>
+
+
+</body>
+
+<script>
+    var tiles = [
+        "brick.png",
+        "grass.jpg",
+        "rocks.jpg",
+    ]
+
+    var height = 10;
+    var width = 10;
+
+    var selectedTile = null;
+
+    var map = []
+
+    var tilesPallete = document.getElementById('tiles')
+    tiles.forEach(function(tile, i){
+        var tileDiv = document.createElement('div');
+        tileDiv.style.backgroundImage = "url(" + tile + ")";
+        tileDiv.setAttribute('tile', i);
+        tileDiv.className = 'tile'
+        tileDiv.innerHTML = "&nbsp;";
+        tilesPallete.appendChild(tileDiv);
+
+        tileDiv.onclick = function(){
+            var tilesSamples = document.getElementsByClassName('tile');
+            for(var j=0; j<tilesSamples.length;j++){
+                tilesSamples[j].classList.remove('selected');
+            }
+            tileDiv.classList.add('selected');
+            selectedTile = i;
+        }
+    })
+
+    function renderMap(){
+        var mapDiv = document.getElementById('map');
+
+        mapDiv.innerHTML = '';
+
+        var table = document.createElement('table')
+
+        function createTileCell(x, y){
+            var cell = document.createElement('td');
+            cell.className = 'tile';
+            cell.style.border = '1px solid grey'
+            cell.innerHTML = "&nbsp;";
+            var asset = tiles[map[y][x]];
+
+            if(asset) cell.style.backgroundImage = "url(" + asset + ")";
+
+            cell.onclick = function(){
+                console.log("click event")
+                map[y][x] = selectedTile;
+                renderMap();
+            }
+            return cell;
+        }
+
+        for(var y = 0; y<map.length; y++){
+            var row = document.createElement('tr')
+            for(var x = 0; x<map[y].length; x++){
+                row.appendChild(createTileCell(x,y));
+            }
+            table.appendChild(row)
+        }
+
+        mapDiv.appendChild(table);
+    }
+
+    function clearMap(){
+        map = [];
+        for(var j = 0; j<height; j++){
+            var row = [];
+            for(var i = 0; i<width; i++){
+                row.push(null)
+            }
+            map.push(row);
+        }
+        renderMap();
+    }
+
+    clearMap();
+</script>
+
+</html>
